@@ -7,6 +7,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from dotenv import load_dotenv
 import gspread
+import json
 from google.oauth2.service_account import Credentials
 
 load_dotenv()
@@ -36,7 +37,11 @@ async def tool_save_to_sheet(lead: dict) -> dict:
         loop = asyncio.get_event_loop()
 
         def _save():
-            creds  = Credentials.from_service_account_file(CREDENTIALS_FILE, scopes=SCOPES)
+            creds_json = os.getenv("GOOGLE_CREDENTIALS")
+            if creds_json:
+                creds = Credentials.from_service_account_info(json.loads(creds_json), scopes=SCOPES)
+            else:
+                creds = Credentials.from_service_account_file(CREDENTIALS_FILE, scopes=SCOPES)
             client = gspread.authorize(creds)
             sheet  = client.open_by_url(SHEET_URL).sheet1
             sheet.append_row([
