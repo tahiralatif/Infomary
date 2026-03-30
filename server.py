@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
-from tools import save_lead_and_notify
+from tools import save_lead_and_notify 
+from pyngrok import ngrok, conf
 import uvicorn
 
 app = FastAPI()
@@ -29,4 +30,13 @@ async def save_lead(request: Request):
     })
 
 if __name__ == "__main__":
+    # Apna token yahan paste karein
+    ngrok.set_auth_token("3BelbQExlcTxrVJjYbRld78oJfy_7TmEV1CK9obk8dypVCwJr")
+    
+    public_url = ngrok.connect(8000)
+    print("\n" + "="*50)
+    print(f"  ✅ VAPI WEBHOOK URL:")
+    print(f"  {public_url}/save-lead")
+    print("="*50 + "\n")
+    
     uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -225,9 +225,9 @@ async def tool_send_email(lead: dict) -> dict:
 
         def _send():
             msg = MIMEMultipart("alternative")
-            msg["Subject"] = "Your Data Has Been Successfully Saved — InfoSenior.care"
+            msg["Subject"] = f"New Lead: {lead['name']} — {lead['care_need']} — {lead['location']}"
             msg["From"]    = f"InfoSenior.care <{SENDER_EMAIL}>"
-            msg["To"]      = lead["email"]
+            msg["To"] = SENDER_EMAIL
 
             plain = (
                 f"Dear {lead['name']},\n\n"
@@ -321,10 +321,6 @@ async def save_lead_and_notify(
     }
 
 
-# ─── AGENT TOOLS (uncomment when adding to agent) ─────────────────────────────
-# from agents import function_tool
-# sheet_tool = function_tool(tool_save_to_sheet)
-# email_tool = function_tool(tool_send_email)
 
 
 # ─── TEST ─────────────────────────────────────────────────────────────────────
