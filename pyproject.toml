@@ -11,6 +11,7 @@ dependencies = [
     "gspread>=6.2.1",
     "ngrok>=1.7.0",
     "pyngrok>=7.5.1",
+    "resend>=2.26.0",
     "sendgrid>=6.12.5",
     "uvicorn>=0.42.0",
 ]

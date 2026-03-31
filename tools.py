@@ -219,17 +219,16 @@ def build_html_email(lead: dict) -> str:
 async def tool_send_email(lead: dict) -> dict:
     print("[Tool 2] Sending confirmation email...")
     try:
-        import sendgrid
-        from sendgrid.helpers.mail import Mail
-
-        sg = sendgrid.SendGridAPIClient(api_key=os.getenv("SENDGRID_API_KEY"))
-        message = Mail(
-            from_email=SENDER_EMAIL,
-            to_emails=SENDER_EMAIL,
-            subject=f"New Lead: {lead['name']} — {lead['care_need']} — {lead['location']}",
-            html_content=build_html_email(lead)
-        )
-        sg.send(message)
+        import resend
+        resend.api_key = os.getenv("RESEND_API_KEY")
+        
+        resend.Emails.send({
+            "from": "InfoSenior.care <onboarding@resend.dev>",
+            "to": SENDER_EMAIL,
+            "subject": f"New Lead: {lead['name']} — {lead['care_need']} — {lead['location']}",
+            "html": build_html_email(lead)
+        })
+        
         print(f"[Tool 2] ✓ Email sent")
         return {"success": True, "message": "Email sent successfully"}
 
