@@ -70,21 +70,9 @@ async def tool_save_to_sheet(lead: dict) -> dict:
 # TOOL 2 — SEND CONFIRMATION EMAIL
 # ═══════════════════════════════════════════════════════════════════════════════
 def build_html_email(lead: dict) -> str:
-    first_name = lead["name"].strip().split()[0]
-    name       = lead["name"]
-    email      = lead["email"]
-    phone      = lead["phone"]
-    care_need  = lead["care_need"]
-    location   = lead["location"]
-    lead_id    = lead["lead_id"]
-    saved_at   = lead["saved_at"]
-
     return f"""<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-</head>
+<head><meta charset="UTF-8"/></head>
 <body style="margin:0;padding:0;background:#f4f6f9;font-family:'Segoe UI',Arial,sans-serif;">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f6f9;padding:40px 0;">
   <tr><td align="center">
@@ -98,114 +86,46 @@ def build_html_email(lead: dict) -> str:
             InfoSenior<span style="color:#90caf9;">.care</span>
           </h1>
           <p style="margin:8px 0 0;color:#bbdefb;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;">
-            AI-Powered Senior Care Platform
+            New Lead Alert 🔔
           </p>
-        </td>
-      </tr>
-
-      <!-- SUCCESS BADGE -->
-      <tr>
-        <td style="background:#e8f5e9;padding:18px 48px;border-bottom:1px solid #c8e6c9;">
-          <table cellpadding="0" cellspacing="0">
-            <tr>
-              <td style="background:#43a047;border-radius:50%;width:32px;height:32px;
-                          text-align:center;vertical-align:middle;">
-                <span style="color:#fff;font-size:18px;line-height:32px;">&#10003;</span>
-              </td>
-              <td style="padding-left:12px;color:#2e7d32;font-size:14px;font-weight:600;">
-                Your data has been successfully saved!
-              </td>
-            </tr>
-          </table>
         </td>
       </tr>
 
       <!-- BODY -->
       <tr>
         <td style="padding:44px 48px;">
-
-          <!-- Greeting -->
           <p style="margin:0 0 24px;color:#1a1a2e;font-size:22px;font-weight:700;">
-            Hi {first_name}! &#128075;
+            New Lead Received! 🎉
           </p>
-
-          <!-- Conversational message -->
           <p style="margin:0 0 20px;color:#333;font-size:15px;line-height:1.9;">
-            Great news — <strong>{name}</strong>, your information has been 
-            <strong>successfully saved</strong> with us at InfoSenior.care! 
-            We're so glad you reached out, and we want you to know that 
-            you're in good hands.
+            A new user has been registered via Infomary. Here are their details:
           </p>
 
-          <p style="margin:0 0 20px;color:#333;font-size:15px;line-height:1.9;">
-            Here's a quick summary of what we have on file for you. 
-            We've registered your phone number as <strong>{phone}</strong>, 
-            and we've made a note of your email address as 
-            <strong style="color:#1a73e8;">{email}</strong> — 
-            this is where we'll keep you updated going forward.
-          </p>
-
-          <p style="margin:0 0 20px;color:#333;font-size:15px;line-height:1.9;">
-            You mentioned that you're looking for <strong>{care_need}</strong> support, 
-            and we've noted your location as <strong>{location}</strong>. 
-            Our team will use this to find the best care options available near you.
-          </p>
-
-          <p style="margin:0 0 36px;color:#333;font-size:15px;line-height:1.9;">
-            One of our care advisors will be reaching out to you soon with 
-            personalized recommendations. In the meantime, feel free to speak 
-            with <strong>Infomary</strong> — your personal AI care advisor — 
-            anytime you have questions or need guidance.
-          </p>
-
-          <!-- Reference ID box -->
+          <!-- Details Table -->
           <table width="100%" cellpadding="0" cellspacing="0"
-                 style="background:#f0f4ff;border-left:4px solid #1a73e8;
-                         border-radius:0 8px 8px 0;margin-bottom:36px;">
-            <tr>
-              <td style="padding:16px 20px;">
-                <p style="margin:0 0 4px;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px;">
-                  Your Reference ID
-                </p>
-                <p style="margin:0;color:#1a1a2e;font-size:16px;font-weight:700;letter-spacing:1px;">
-                  {lead_id}
-                </p>
-                <p style="margin:4px 0 0;color:#aaa;font-size:12px;">
-                  Saved on {saved_at}
-                </p>
-              </td>
-            </tr>
+                 style="background:#f0f4ff;border-radius:8px;margin-bottom:24px;">
+            <tr><td style="padding:16px 20px;">
+              <p style="margin:0 0 8px;color:#333;font-size:14px;"><strong>👤 Name:</strong> {lead['name']}</p>
+              <p style="margin:0 0 8px;color:#333;font-size:14px;"><strong>📧 Email:</strong> {lead['email']}</p>
+              <p style="margin:0 0 8px;color:#333;font-size:14px;"><strong>📞 Phone:</strong> {lead['phone']}</p>
+              <p style="margin:0 0 8px;color:#333;font-size:14px;"><strong>🏥 Care Need:</strong> {lead['care_need']}</p>
+              <p style="margin:0 0 8px;color:#333;font-size:14px;"><strong>📍 Location:</strong> {lead['location']}</p>
+              <p style="margin:0 0 8px;color:#333;font-size:14px;"><strong>📝 Notes:</strong> {lead['notes'] or 'N/A'}</p>
+              <p style="margin:0 0 8px;color:#333;font-size:14px;"><strong>🕐 Saved At:</strong> {lead['saved_at']}</p>
+              <p style="margin:0;color:#333;font-size:14px;"><strong>🆔 Lead ID:</strong> {lead['lead_id']}</p>
+            </td></tr>
           </table>
 
-          <!-- Warm closing -->
-          <p style="margin:0 0 32px;color:#333;font-size:15px;line-height:1.9;">
-            Thank you for trusting us, {first_name}. We truly care about 
-            making this journey as smooth and stress-free as possible for 
-            you and your family. We'll be in touch very soon! &#128149;
+          <p style="margin:0;color:#333;font-size:15px;line-height:1.9;">
+            Please follow up with this lead as soon as possible! 🚀
           </p>
-
-          <!-- CTA -->
-          <table cellpadding="0" cellspacing="0">
-            <tr>
-              <td style="background:linear-gradient(135deg,#1a73e8,#0d47a1);
-                          border-radius:8px;padding:14px 32px;">
-                <a href="https://infosenior.care" target="_blank"
-                   style="color:#fff;font-size:14px;font-weight:700;text-decoration:none;">
-                  Talk to Infomary &rarr;
-                </a>
-              </td>
-            </tr>
-          </table>
-
         </td>
       </tr>
 
       <!-- FOOTER -->
       <tr>
         <td style="border-top:1px solid #ebebeb;padding:28px 48px;text-align:center;">
-          <p style="margin:0 0 4px;color:#1a73e8;font-size:14px;font-weight:700;">The InfoSenior.care Team</p>
-          <p style="margin:0 0 4px;color:#999;font-size:12px;">AI-Powered Senior Care Platform &bull; United States</p>
-          <p style="margin:0;color:#bbb;font-size:11px;">This is an automated message. Please do not reply directly to this email.</p>
+          <p style="margin:0;color:#1a73e8;font-size:14px;font-weight:700;">InfoSenior.care — Internal Notification</p>
         </td>
       </tr>
 
@@ -214,7 +134,6 @@ def build_html_email(lead: dict) -> str:
 </table>
 </body>
 </html>"""
-
 
 async def tool_send_email(lead: dict) -> dict:
     print("[Tool 2] Sending confirmation email...")
