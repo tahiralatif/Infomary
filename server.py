@@ -30,7 +30,6 @@ async def save_lead(request: Request):
     })
 
 if __name__ == "__main__":
-    # Apna token yahan paste karein
     ngrok.set_auth_token("3BelbQExlcTxrVJjYbRld78oJfy_7TmEV1CK9obk8dypVCwJr")
     
     public_url = ngrok.connect(8000)

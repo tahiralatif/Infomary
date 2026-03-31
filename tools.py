@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 import gspread
 import json
 from google.oauth2.service_account import Credentials
+import sendgrid
 
 load_dotenv()
 
@@ -216,48 +217,25 @@ def build_html_email(lead: dict) -> str:
 
 
 async def tool_send_email(lead: dict) -> dict:
-    """
-    Tool 2: Sends confirmation email to the user with their saved details.
-    """
     print("[Tool 2] Sending confirmation email...")
     try:
-        loop = asyncio.get_event_loop()
+        import sendgrid
+        from sendgrid.helpers.mail import Mail
 
-        def _send():
-            msg = MIMEMultipart("alternative")
-            msg["Subject"] = f"New Lead: {lead['name']} — {lead['care_need']} — {lead['location']}"
-            msg["From"]    = f"InfoSenior.care <{SENDER_EMAIL}>"
-            msg["To"] = SENDER_EMAIL
-
-            plain = (
-                f"Dear {lead['name']},\n\n"
-                f"Your data has been successfully saved.\n\n"
-                f"Full Name  : {lead['name']}\n"
-                f"Email      : {lead['email']}\n"
-                f"Phone      : {lead['phone']}\n"
-                f"Care Need  : {lead['care_need']}\n"
-                f"Location   : {lead['location']}\n"
-                f"Saved At   : {lead['saved_at']}\n\n"
-                f"Registration ID: {lead['lead_id']}\n\n"
-                f"Warm regards,\nInfoSenior.care Team"
-            )
-            msg.attach(MIMEText(plain, "plain"))
-            msg.attach(MIMEText(build_html_email(lead), "html"))
-
-            server = smtplib.SMTP(SMTP_HOST, SMTP_PORT)
-            server.starttls()
-            server.login(SENDER_EMAIL, SENDER_PASSWORD)
-            server.sendmail(SENDER_EMAIL, lead["email"], msg.as_string())
-            server.quit()
-
-        await loop.run_in_executor(None, _send)
-        print(f"[Tool 2] ✓ Email sent → {lead['name']} ({lead['email']})")
-        return {"success": True, "message": f"Email sent to {lead['email']}"}
+        sg = sendgrid.SendGridAPIClient(api_key=os.getenv("SENDGRID_API_KEY"))
+        message = Mail(
+            from_email=SENDER_EMAIL,
+            to_emails=SENDER_EMAIL,
+            subject=f"New Lead: {lead['name']} — {lead['care_need']} — {lead['location']}",
+            html_content=build_html_email(lead)
+        )
+        sg.send(message)
+        print(f"[Tool 2] ✓ Email sent")
+        return {"success": True, "message": "Email sent successfully"}
 
     except Exception as e:
         print(f"[Tool 2] ✗ Email error → {e}")
         return {"success": False, "error": str(e)}
-
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # MAIN — RUN BOTH TOOLS IN PARALLEL
