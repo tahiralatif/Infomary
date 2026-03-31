@@ -1,7 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from tools import save_lead_and_notify 
-from pyngrok import ngrok, conf
 import uvicorn
 
 app = FastAPI()
@@ -14,12 +13,28 @@ async def save_lead(request: Request):
     args = tool_call["function"]["arguments"]
     
     result = await save_lead_and_notify(
-        name      = args.get("name"),
-        email     = args.get("email"),
-        phone     = args.get("phone"),
-        care_need = args.get("care_need"),
-        location  = args.get("location"),
-        notes     = args.get("notes", "")
+        name               = args.get("name", ""),
+        email              = args.get("email", ""),
+        phone              = args.get("phone", ""),
+        care_need          = args.get("care_need", ""),
+        location           = args.get("location", ""),
+        notes              = args.get("notes", ""),
+        age                = args.get("age", ""),
+        gender             = args.get("gender", ""),
+        living_arrangement = args.get("living_arrangement", ""),
+        physician          = args.get("physician", ""),
+        conditions         = args.get("conditions", ""),
+        hospitalizations   = args.get("hospitalizations", ""),
+        medications        = args.get("medications", ""),
+        allergies          = args.get("allergies", ""),
+        care_type          = args.get("care_type", ""),
+        care_hours         = args.get("care_hours", ""),
+        insurance          = args.get("insurance", ""),
+        budget             = args.get("budget", ""),
+        home_hazards       = args.get("home_hazards", ""),
+        medical_equipment  = args.get("medical_equipment", ""),
+        other_factors      = args.get("other_factors", ""),
+        transportation     = args.get("transportation", ""),
     )
     
     return JSONResponse({
@@ -30,12 +45,4 @@ async def save_lead(request: Request):
     })
 
 if __name__ == "__main__":
-    ngrok.set_auth_token("3BelbQExlcTxrVJjYbRld78oJfy_7TmEV1CK9obk8dypVCwJr")
-    
-    public_url = ngrok.connect(8000)
-    print("\n" + "="*50)
-    print(f"  ✅ VAPI WEBHOOK URL:")
-    print(f"  {public_url}/save-lead")
-    print("="*50 + "\n")
-    
     uvicorn.run(app, host="0.0.0.0", port=8000)
