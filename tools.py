@@ -86,7 +86,16 @@ def build_html_email(lead: dict) -> str:
             InfoSenior<span style="color:#90caf9;">.care</span>
           </h1>
           <p style="margin:8px 0 0;color:#bbdefb;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;">
-            New Lead Alert 🔔
+            New Lead Notification
+          </p>
+        </td>
+      </tr>
+
+      <!-- ALERT BADGE -->
+      <tr>
+        <td style="background:#e8f0fe;padding:18px 48px;border-bottom:1px solid #c5d4f5;">
+          <p style="margin:0;color:#1a47a1;font-size:14px;font-weight:600;">
+            A new lead has been captured via Infomary — please follow up promptly.
           </p>
         </td>
       </tr>
@@ -94,38 +103,93 @@ def build_html_email(lead: dict) -> str:
       <!-- BODY -->
       <tr>
         <td style="padding:44px 48px;">
-          <p style="margin:0 0 24px;color:#1a1a2e;font-size:22px;font-weight:700;">
-            New Lead Received! 🎉
-          </p>
-          <p style="margin:0 0 20px;color:#333;font-size:15px;line-height:1.9;">
-            A new user has been registered via Infomary. Here are their details:
+
+          <p style="margin:0 0 28px;color:#1a1a2e;font-size:20px;font-weight:700;">
+            New Lead Details
           </p>
 
           <!-- Details Table -->
           <table width="100%" cellpadding="0" cellspacing="0"
-                 style="background:#f0f4ff;border-radius:8px;margin-bottom:24px;">
-            <tr><td style="padding:16px 20px;">
-              <p style="margin:0 0 8px;color:#333;font-size:14px;"><strong>👤 Name:</strong> {lead['name']}</p>
-              <p style="margin:0 0 8px;color:#333;font-size:14px;"><strong>📧 Email:</strong> {lead['email']}</p>
-              <p style="margin:0 0 8px;color:#333;font-size:14px;"><strong>📞 Phone:</strong> {lead['phone']}</p>
-              <p style="margin:0 0 8px;color:#333;font-size:14px;"><strong>🏥 Care Need:</strong> {lead['care_need']}</p>
-              <p style="margin:0 0 8px;color:#333;font-size:14px;"><strong>📍 Location:</strong> {lead['location']}</p>
-              <p style="margin:0 0 8px;color:#333;font-size:14px;"><strong>📝 Notes:</strong> {lead['notes'] or 'N/A'}</p>
-              <p style="margin:0 0 8px;color:#333;font-size:14px;"><strong>🕐 Saved At:</strong> {lead['saved_at']}</p>
-              <p style="margin:0;color:#333;font-size:14px;"><strong>🆔 Lead ID:</strong> {lead['lead_id']}</p>
-            </td></tr>
+                 style="border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;margin-bottom:32px;">
+            <tr style="background:#f8f9ff;">
+              <td style="padding:12px 20px;border-bottom:1px solid #e0e0e0;width:40%;">
+                <p style="margin:0;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Full Name</p>
+              </td>
+              <td style="padding:12px 20px;border-bottom:1px solid #e0e0e0;">
+                <p style="margin:0;color:#1a1a2e;font-size:14px;font-weight:600;">{lead['name']}</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:12px 20px;border-bottom:1px solid #e0e0e0;background:#f8f9ff;">
+                <p style="margin:0;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Email Address</p>
+              </td>
+              <td style="padding:12px 20px;border-bottom:1px solid #e0e0e0;">
+                <p style="margin:0;color:#1a73e8;font-size:14px;">{lead['email']}</p>
+              </td>
+            </tr>
+            <tr style="background:#f8f9ff;">
+              <td style="padding:12px 20px;border-bottom:1px solid #e0e0e0;">
+                <p style="margin:0;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Phone Number</p>
+              </td>
+              <td style="padding:12px 20px;border-bottom:1px solid #e0e0e0;">
+                <p style="margin:0;color:#1a1a2e;font-size:14px;">{lead['phone']}</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:12px 20px;border-bottom:1px solid #e0e0e0;background:#f8f9ff;">
+                <p style="margin:0;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Care Need</p>
+              </td>
+              <td style="padding:12px 20px;border-bottom:1px solid #e0e0e0;">
+                <p style="margin:0;color:#1a1a2e;font-size:14px;">{lead['care_need']}</p>
+              </td>
+            </tr>
+            <tr style="background:#f8f9ff;">
+              <td style="padding:12px 20px;border-bottom:1px solid #e0e0e0;">
+                <p style="margin:0;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Location</p>
+              </td>
+              <td style="padding:12px 20px;border-bottom:1px solid #e0e0e0;">
+                <p style="margin:0;color:#1a1a2e;font-size:14px;">{lead['location']}</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:12px 20px;border-bottom:1px solid #e0e0e0;background:#f8f9ff;">
+                <p style="margin:0;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Notes</p>
+              </td>
+              <td style="padding:12px 20px;border-bottom:1px solid #e0e0e0;">
+                <p style="margin:0;color:#1a1a2e;font-size:14px;">{lead['notes'] or 'N/A'}</p>
+              </td>
+            </tr>
+            <tr style="background:#f8f9ff;">
+              <td style="padding:12px 20px;border-bottom:1px solid #e0e0e0;">
+                <p style="margin:0;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Lead ID</p>
+              </td>
+              <td style="padding:12px 20px;border-bottom:1px solid #e0e0e0;">
+                <p style="margin:0;color:#1a1a2e;font-size:14px;font-weight:700;letter-spacing:1px;">{lead['lead_id']}</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:12px 20px;background:#f8f9ff;">
+                <p style="margin:0;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Captured At</p>
+              </td>
+              <td style="padding:12px 20px;">
+                <p style="margin:0;color:#1a1a2e;font-size:14px;">{lead['saved_at']}</p>
+              </td>
+            </tr>
           </table>
 
-          <p style="margin:0;color:#333;font-size:15px;line-height:1.9;">
-            Please follow up with this lead as soon as possible! 🚀
+          <p style="margin:0;color:#555;font-size:14px;line-height:1.8;">
+            This lead was captured automatically via the Infomary AI voice assistant. 
+            Please review the details above and initiate follow-up at your earliest convenience.
           </p>
+
         </td>
       </tr>
 
       <!-- FOOTER -->
       <tr>
         <td style="border-top:1px solid #ebebeb;padding:28px 48px;text-align:center;">
-          <p style="margin:0;color:#1a73e8;font-size:14px;font-weight:700;">InfoSenior.care — Internal Notification</p>
+          <p style="margin:0 0 4px;color:#1a73e8;font-size:14px;font-weight:700;">InfoSenior.care</p>
+          <p style="margin:0;color:#999;font-size:12px;">This is an automated internal notification. Please do not reply to this email.</p>
         </td>
       </tr>
 
