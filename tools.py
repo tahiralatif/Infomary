@@ -76,9 +76,11 @@ async def tool_save_to_sheet(lead: dict) -> dict:
 # TOOL 2 — SEND EMAIL
 # ═══════════════════════════════════════════════════════════════════════════════
 def build_html_email(lead: dict) -> str:
-    def row(label, key, alt_key=None):
-        value = lead.get(key) or (lead.get(alt_key) if alt_key else None) or "N/A"
-        bg = "#f8f9ff" if label else "#fff"
+    def row(label, key):
+        value = lead.get(key, "")
+        if not value or value.strip() == "":
+            return ""  
+        bg = "#f8f9ff"
         return f"""
         <tr style="background:{bg};">
           <td style="padding:12px 20px;border-bottom:1px solid #e0e0e0;width:40%;">
