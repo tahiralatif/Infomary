@@ -2,6 +2,8 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from tools import save_lead_and_notify 
 import uvicorn
+import httpx
+import os
 
 app = FastAPI()
 
@@ -41,6 +43,42 @@ async def save_lead(request: Request):
         "results": [{
             "toolCallId": tool_call["id"],
             "result": str(result)
+        }]
+    })
+
+@app.post("/google-search")
+async def google_search_endpoint(request: Request):
+    body = await request.json()
+    
+    tool_call = body["message"]["toolCallList"][0]
+    args = tool_call["function"]["arguments"]
+    
+    query = args.get("query", "")
+    
+  
+    api_key = os.getenv("SERPER_API_KEY")
+    
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            "https://google.serper.dev/search",
+            headers={
+                "X-API-KEY": api_key,
+                "Content-Type": "application/json"
+            },
+            json={"q": query, "num": 5},
+            timeout=10.0
+        )
+        results = response.json()
+        organic = results.get("organic", [])
+        
+        output = ""
+        for r in organic[:5]:
+            output += f"• {r.get('title')}: {r.get('snippet')} ({r.get('link')})\n"
+    
+    return JSONResponse({
+        "results": [{
+            "toolCallId": tool_call["id"],
+            "result": output or "No results found."
         }]
     })
 
